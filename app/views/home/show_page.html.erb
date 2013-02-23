@@ -1,0 +1,47 @@
+<% if @err%>
+  <div style="border : 1px solid red; color: red;">
+    <%= @err%>
+  </div>
+<%end%>
+
+<%= radio_button_tag 'user_options','show' %>
+<%= label_tag 'Show Uploaded Files'%>
+<%= radio_button_tag 'user_options', 'new'%>
+<%= label_tag 'Newly Upload a file'%>
+<div id="show">
+</div>
+
+<div id="new" class = "user_functionality" style="display: none">
+  <%= form_tag('/home/file_upload', :multipart => true, :onSubmit => " return checkForm();") do%>
+       <%= label_tag "Select your file"%>
+       <%= file_field_tag 'file_upload'%>
+       <%= hidden_field_tag 'user', @user%>
+       <%= submit_tag 'Submit'%>
+  <%end%>
+</div>
+
+
+<script type="text/javascript">
+ $(document).ready(function(){
+  $('input[type=radio]').click(function() {
+    $(".user_functionality").css('display', 'none'); 
+    if(this.value == "new")
+      $("#"+ this.value).show();
+    if(this.value == "show"){
+     $.ajax({
+        url: 'get_files',
+        data: "data=" + "<%= @user%>"
+      }).done(function(content){
+          $("#show").html(content);
+      })
+    }
+  });
+ })
+
+ function checkForm(){
+  if($("#file_upload").val() == ""){
+   alert("Plz select any file");
+   return false;
+  }
+  }
+</script>

@@ -1,0 +1,18 @@
+<div id="login">
+<%= form_tag('/home/login', {:onSubmit => " return checkLogin();"}) do %>
+  <div>
+    <%= label_tag 'User Name'%>
+    <%= text_field_tag 'user_name' %>
+  </div>
+   <div><%= submit_tag 'Login', :name=> 'option'%></div>
+<%end%>
+</div>
+
+<script type="text/javascript">
+  function checkLogin(){
+   if($("#user_name").val() == ""){
+      alert("Plz enter a valid username");
+      return false;
+  }
+  }
+</script>
