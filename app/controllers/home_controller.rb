@@ -44,7 +44,6 @@ class HomeController < ApplicationController
    begin 
     size_in_MB = bytes_to_megabytes(params[:file_upload].size)
     raise "Uploaded file should be below 5MB" if size_in_MB > 5
-    logger.info "^^^^^^^^^^ #{params[:file_upload].content_type}"
     raise "Only image & pdf files can be uploaded" if !check_for_content_type(params[:file_upload].content_type)
     @user = params[:user]
     store_file = User.save_uploaded_file(params[:file_upload], params[:user])
@@ -59,7 +58,7 @@ class HomeController < ApplicationController
   end
  
   def check_for_content_type(content_type)
-    return false if !["image/jpeg", "image/png", "image/jpg", "image/gif"].include?(content_type)
+    return false if !["image/jpeg", "image/png", "image/jpg", "image/gif", "application/pdf"].include?(content_type)
     return true
   end
 end
